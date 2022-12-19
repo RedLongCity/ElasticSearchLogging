@@ -1,0 +1,64 @@
+version: '3'
+
+networks:
+  elastic-2:
+    driver: bridge
+
+volumes:
+  elasticsearch:
+    driver: local
+
+services:
+
+  logstash:
+    container_name: logstash_one_channel
+    image: docker.elastic.co/logstash/logstash:8.5.3
+    networks:
+      - elastic-2
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+      pipeline.ecs_compatibility: disabled
+    ports:
+      - 5046:5046
+      - 8080:8080
+      - 12345:12345
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+    volumes:
+      - ./config/logstash.conf:/usr/share/logstash/logstash.conf:ro
+      - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+
+  #      - ./config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+  #      - ./config/pipelines:/usr/share/logstash/config/pipelines:ro
+  #      - ./logs:/usr/share/logstash/input
+
+  elasticsearch:
+    container_name: es-02
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.3
+    networks:
+      - elastic-2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      xpack.security.enabled: false
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+  #    environment:
+  #      - "ES_JAVA_OPTS=-Xms220m -Xmx220m"
+  #      - xpack.security.enabled=false
+  #    volumes:
+  #      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+
+  kibana:
+    container_name: kib-02
+    image: docker.elastic.co/kibana/kibana:8.5.3
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic-2
+    ports:
+      - 5601:5601
+
