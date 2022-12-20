@@ -12,6 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         logStash.info("Info Message");
+//        logStash.error("Error Message");
         logConsole.info("Info Message");
 
         Thread.sleep(5000);
