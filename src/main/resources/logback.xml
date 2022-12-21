@@ -9,14 +9,78 @@
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
 <!--        <destination>0.0.0.0:12345</destination>-->
-<!--        <destination>localhost:12345</destination>-->
+        <destination>localhost:12345</destination>
         <keepAliveDuration>5 minutes</keepAliveDuration>
         <!-- encoder is required -->
-        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+<!--        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">-->
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <provider class="net.logstash.logback.composite.loggingevent.LogLevelJsonProvider"/>
+                <provider class="net.logstash.logback.composite.loggingevent.MessageJsonProvider"/>
+                <provider class="json.ExpiredTimeJsonProvider"/>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="stash_business_type_1" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:12345</destination>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <provider class="net.logstash.logback.composite.loggingevent.LogLevelJsonProvider"/>
+                <provider class="net.logstash.logback.composite.loggingevent.MessageJsonProvider"/>
+                <provider class="json.BusinessTypeJsonProvide">
+                    <businessType>BUSINESS_TYPE_1</businessType>
+                </provider>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="stash_business_type_2" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:12345</destination>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <provider class="net.logstash.logback.composite.loggingevent.LogLevelJsonProvider"/>
+                <provider class="net.logstash.logback.composite.loggingevent.MessageJsonProvider"/>
+                <provider class="json.BusinessTypeJsonProvide">
+                    <businessType>BUSINESS_TYPE_2</businessType>
+                </provider>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="stash_business_type_3" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:12345</destination>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <provider class="net.logstash.logback.composite.loggingevent.LogLevelJsonProvider"/>
+                <provider class="net.logstash.logback.composite.loggingevent.MessageJsonProvider"/>
+                <provider class="json.BusinessTypeJsonProvide">
+                    <businessType>BUSINESS_TYPE_3</businessType>
+                </provider>
+            </providers>
+        </encoder>
     </appender>
 
     <logger name="stash" level="debug" additivity="false">
         <appender-ref ref="stash"/>
+    </logger>
+
+    <logger name="stash_business_type_1" level="debug" additivity="false">
+        <appender-ref ref="stash_business_type_1"/>
+    </logger>
+
+    <logger name="stash_business_type_2" level="debug" additivity="false">
+        <appender-ref ref="stash_business_type_2"/>
+    </logger>
+
+    <logger name="stash_business_type_3" level="debug" additivity="false">
+        <appender-ref ref="stash_business_type_3"/>
     </logger>
 
     <root level="INFO">
