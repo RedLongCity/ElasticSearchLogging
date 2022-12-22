@@ -39,11 +39,9 @@ public class Main {
 
         ApplicationContext ctx = new AnnotationConfigApplicationContext(BeanConfiguration.class);
         BusinessLogsService service = ctx.getBean("businessLogsService", BusinessLogsService.class);
+        LocalDate timestamp = LocalDate.now().minusDays(1);
 
-//        Timestamp timestamp = Timestamp.valueOf(LocalDate.now().minusDays(1).atStartOfDay());
-
-//        List<BusinessLog> infoLogs = service.getLogsByLevelAndAfterTimestamp("INFO", timestamp);
-        List<BusinessLog> logs = service.getLogsByLevel("INFO");
+        List<BusinessLog> logs = service.getLogsByLevelAndAfterTimestamp("INFO", timestamp);
         Map<BusinessType, List<BusinessLog>> groupedByBusinessType = logs.stream()
                 .collect(Collectors.groupingBy(BusinessLog::getBusinessType));
 

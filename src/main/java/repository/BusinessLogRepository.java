@@ -6,14 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Repository
 public interface BusinessLogRepository extends ElasticsearchRepository<BusinessLog, String> {
 
-//    Page<BusinessLog> findBusinessLogByLevelEqualsAndTimestampAfter(String level,
-//                                                                    Timestamp timestamp,
-//                                                                    Pageable pageable);
+    Page<BusinessLog> findBusinessLogByLevelEqualsAndTimestampAfterAndBusinessTypeNotNull(String level,
+                                                                    LocalDate timestamp,
+                                                                    Pageable pageable);
 
     Page<BusinessLog> findBusinessLogByLevelEquals(String level,
                                                    Pageable pageable);

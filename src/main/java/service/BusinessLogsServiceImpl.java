@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import repository.BusinessLogRepository;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,27 +21,27 @@ public class BusinessLogsServiceImpl implements BusinessLogsService {
 
     private final BusinessLogRepository repository;
 
-//    @Override
-//    public List<BusinessLog> getLogsByLevelAndAfterTimestamp(String level, Timestamp timestamp) {
-//        List<BusinessLog> result = new ArrayList<>();
-//
-//        int pageNum = 0;
-//        Pageable pageable = PageRequest.of(pageNum, 10);
-//        Page<BusinessLog> page;
-//
-//        do {
-//            page = repository.findBusinessLogByLevelEqualsAndTimestampAfter(level, timestamp, pageable);
-//            List<BusinessLog> content = page.getContent();
-//
-//            if (!CollectionUtils.isEmpty(content))
-//                result.addAll(content);
-//
-//            pageable = PageRequest.of(++pageNum, 10);
-//        }
-//        while (!page.isEmpty());
-//
-//        return result;
-//    }
+    @Override
+    public List<BusinessLog> getLogsByLevelAndAfterTimestamp(String level, LocalDate timestamp) {
+        List<BusinessLog> result = new ArrayList<>();
+
+        int pageNum = 0;
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        Page<BusinessLog> page;
+
+        do {
+            page = repository.findBusinessLogByLevelEqualsAndTimestampAfterAndBusinessTypeNotNull(level, timestamp, pageable);
+            List<BusinessLog> content = page.getContent();
+
+            if (!CollectionUtils.isEmpty(content))
+                result.addAll(content);
+
+            pageable = PageRequest.of(++pageNum, 10);
+        }
+        while (!page.isEmpty());
+
+        return result;
+    }
 
     @Override
     public List<BusinessLog> getLogsByLevel(String level) {
