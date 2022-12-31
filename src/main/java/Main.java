@@ -1,22 +1,15 @@
-import com.google.common.collect.Lists;
 import config.BeanConfiguration;
 import entity.BusinessLog;
-import entity.BusinessType;
-import entity.V24JurLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import service.BusinessLogsService;
-import service.V24JurElasticLogService;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import static entity.BusinessType.*;
 
 public class Main {
 
@@ -41,14 +34,15 @@ public class Main {
         BusinessLogsService service = ctx.getBean("businessLogsService", BusinessLogsService.class);
         LocalDate timestamp = LocalDate.now().minusDays(1);
 
-        List<BusinessLog> logs = service.getLogsByLevelAndAfterTimestamp("INFO", timestamp);
-        Map<BusinessType, List<BusinessLog>> groupedByBusinessType = logs.stream()
-                .collect(Collectors.groupingBy(BusinessLog::getBusinessType));
+        List<BusinessLog> logsBT1 = service.getLogsByLevelAndAfterTimestampAndBusinessType("INFO", timestamp, BUSINESS_TYPE_1);
+        List<BusinessLog> logsBT2 = service.getLogsByLevelAndAfterTimestampAndBusinessType("INFO", timestamp, BUSINESS_TYPE_2);
+        List<BusinessLog> logsBT3 = service.getLogsByLevelAndAfterTimestampAndBusinessType("INFO", timestamp, BUSINESS_TYPE_3);
 
-        assert groupedByBusinessType.containsKey(BusinessType.BUSINESS_TYPE_1);
-        assert groupedByBusinessType.containsKey(BusinessType.BUSINESS_TYPE_2);
-        assert groupedByBusinessType.containsKey(BusinessType.BUSINESS_TYPE_3);
+        assert !logsBT1.isEmpty();
+        assert !logsBT2.isEmpty();
+        assert !logsBT3.isEmpty();
 
+        System.out.println("MAIN FINISHED");
     }
 
 

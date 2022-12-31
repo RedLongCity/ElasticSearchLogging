@@ -1,6 +1,7 @@
 package service;
 
 import entity.BusinessLog;
+import entity.BusinessType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,9 @@ public class BusinessLogsServiceImpl implements BusinessLogsService {
     private final BusinessLogRepository repository;
 
     @Override
-    public List<BusinessLog> getLogsByLevelAndAfterTimestamp(String level, LocalDate timestamp) {
+    public List<BusinessLog> getLogsByLevelAndAfterTimestampAndBusinessType(String level,
+                                                                            LocalDate timestamp,
+                                                                            BusinessType businessType) {
         List<BusinessLog> result = new ArrayList<>();
 
         int pageNum = 0;
@@ -30,7 +33,7 @@ public class BusinessLogsServiceImpl implements BusinessLogsService {
         Page<BusinessLog> page;
 
         do {
-            page = repository.findBusinessLogByLevelEqualsAndTimestampAfterAndBusinessTypeNotNull(level, timestamp, pageable);
+            page = repository.findBusinessLogByLevelEqualsAndTimestampAfterAndBusinessType(level, timestamp, businessType, pageable);
             List<BusinessLog> content = page.getContent();
 
             if (!CollectionUtils.isEmpty(content))

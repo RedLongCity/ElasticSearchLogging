@@ -17,7 +17,11 @@
             <providers>
                 <provider class="net.logstash.logback.composite.loggingevent.LogLevelJsonProvider"/>
                 <provider class="net.logstash.logback.composite.loggingevent.MessageJsonProvider"/>
+                <provider class="net.logstash.logback.composite.loggingevent.StackTraceJsonProvider"/>
                 <provider class="json.ExpiredTimeJsonProvider"/>
+                <provider class="json.BusinessTypeJsonProvide">
+                    <businessType>BUSINESS_TYPE_1</businessType>
+                </provider>
             </providers>
         </encoder>
     </appender>

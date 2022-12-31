@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "v24jur", createIndex = false)
+@Document(indexName = "v24jur-*", createIndex = false)
 public class BusinessLog {
 
     @Id
